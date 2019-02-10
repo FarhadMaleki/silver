@@ -1,0 +1,3 @@
+ID	FCLower	FCUpper
+a	1.5	2.5
+e	-4.5	-3.5

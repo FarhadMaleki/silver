@@ -1,0 +1,3 @@
+ID	FCLower	FCUpper
+a	2	3
+e	-3	-2
