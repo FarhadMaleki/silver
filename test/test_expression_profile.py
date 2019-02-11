@@ -96,8 +96,7 @@ class TestExpressionProfile(unittest.TestCase):
         # Check if samples return correct values
         for idx, col in enumerate(self.col_names):
             self.assertListEqual(list(self.profile.samples([idx])),
-                                 list(self.profile.samples([col],
-                                                           is_index=False)))
+                                 list(self.profile.samples([col])))
             self.assertListEqual(self.profile.samples([idx]).columns,
                                  [col])
             self.assertListEqual(list(self.profile.samples([idx]).keys()),
@@ -106,8 +105,7 @@ class TestExpressionProfile(unittest.TestCase):
                              ['A', 'B'])
         self.assertListEqual(list(self.profile.samples([0, 1]).keys()),
                              self.row_names)
-        self.assertEqual(list(self.profile.samples(self.col_names,
-                                                   is_index=False).items()),
+        self.assertEqual(list(self.profile.samples(self.col_names).items()),
                          self.items)
         col_indices = list(range(self.NUM_COLUMNS))
         self.assertEqual(list(self.profile.samples(col_indices).items()),
