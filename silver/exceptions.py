@@ -6,7 +6,8 @@ __all__ = ['InvalidGenesetFoldChangeFile', 'InvalidGenesetRepositoryFile',
             'InvalidNumberOfInputSamples', 'InvalidNumberOfOutputSamples',
             'InvalidValueforStandardDistributionOfNoise',
             'InvalidNumberOfGenes', 'CaseControlProfileMissMatch',
-            'InvalidContrastException', 'NonExistingExpressionException']
+            'InvalidContrastException', 'NonExistingExpressionException',
+            'InvalidLogFoldChangeValue']
 
 
 class InvalidGenesetFoldChangeFile(Exception):
@@ -60,5 +61,10 @@ class InvalidContrastException(Exception):
 
 
 class NonExistingExpressionException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
+class InvalidLogFoldChangeValue(Exception):
     def __init__(self, message):
         super().__init__(message)

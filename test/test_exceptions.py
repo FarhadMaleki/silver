@@ -133,3 +133,15 @@ class TestExceptions(unittest.TestCase):
             self.assertTrue(str(e), msg)
         except:
             self.assertTrue(False)
+
+
+    def test_InvalidLogFoldChangeValue(self):
+        msg = 'An exception was raised.'
+        try:
+            raise InvalidLogFoldChangeValue(msg)
+            self.assertTrue(False)
+        except InvalidLogFoldChangeValue as e:
+            self.assertTrue(str(e), msg)
+        except:
+            self.assertTrue(False)
+
