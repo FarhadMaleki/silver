@@ -1,0 +1,719 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>silver package &#8212; Silver 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Silver 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="silver-package">
+<h1>silver package<a class="headerlink" href="#silver-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-silver.dataset">
+<span id="silver-dataset-module"></span><h2>silver.dataset module<a class="headerlink" href="#module-silver.dataset" title="Permalink to this headline">¶</a></h2>
+<p>This module simulates expression datasets.</p>
+<dl class="class">
+<dt id="silver.dataset.Dataset">
+<em class="property">class </em><code class="descclassname">silver.dataset.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>ctrl_profile</em>, <em>case_profile</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.dataset.Dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Set the required case/control data to be used for Dataset creation.
+:param ctrl_profile: A ExpressionProfile object</p>
+<blockquote>
+<div>containing expression measures for control samples.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>case_profile</strong> (<a class="reference internal" href="#silver.expression_profile.ExpressionProfile" title="silver.expression_profile.ExpressionProfile"><em>ExpressionProfile</em></a>) – A ExpressionProfile object
+containing expression measures for case samples.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">MismatchedProfileException</span></code> – If the order of gene ids in
+ctrl_profile and case_profile are not the same.</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="silver.dataset.Dataset.diff_express">
+<em class="property">static </em><code class="descname">diff_express</code><span class="sig-paren">(</span><em>ctrls</em>, <em>cases</em>, <em>genes_fold_changes</em>, <em>dexpress_obj</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/dataset.html#Dataset.diff_express"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.dataset.Dataset.diff_express" title="Permalink to this definition">¶</a></dt>
+<dd><p>Differentially express some genes on the simulated cases.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ctrls</strong> (<a class="reference internal" href="#silver.expression_profile.ExpressionProfile" title="silver.expression_profile.ExpressionProfile"><em>ExpressionProfile</em></a>) – A ExpressionProfile containing simulated
+controls.</li>
+<li><strong>cases</strong> (<a class="reference internal" href="#silver.expression_profile.ExpressionProfile" title="silver.expression_profile.ExpressionProfile"><em>ExpressionProfile</em></a>) – A ExpressionProfile containing simulated
+cases, which are
+a replicate for controls without differential expression.</li>
+<li><strong>genes_fold_changes</strong> (<em>dict</em>) – A dictionary representing the
+fold-change values for some genes. Each gene in
+genes_fold_changes.keys() must be an index element of
+ctrls and cases.</li>
+<li><strong>dexpress_obj</strong> (<a class="reference internal" href="#silver.dexpress.DExpress" title="silver.dexpress.DExpress"><em>DExpress</em></a>) – A DExpress object that determines the
+procedure to be applied for differential expression.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A tuple containing ctrls (unchanged) and updated cases.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="silver.dataset.Dataset.make_custom_replicates">
+<code class="descname">make_custom_replicates</code><span class="sig-paren">(</span><em>simulated_ctrl_indices</em>, <em>simulated_case_indices</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/dataset.html#Dataset.make_custom_replicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.dataset.Dataset.make_custom_replicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a replicate datasets with predetermined samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>simulated_ctrl_indices</strong> (<em>array-like</em>) – The indices of samples
+to be used as control samples. These samples are chosen from
+all controls used for initializing the object.</li>
+<li><strong>simulated_case_indices</strong> (<em>array-like</em>) – The indices of samples
+to be used as case samples. These samples are chosen from
+all controls used for initializing the object.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">IndexError</span></code> – If simulated_ctrl_indices (simulated_case_indices)
+contains a value greater than or equal to the total number
+of controls (cases).</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – If elements of simulated_ctrl_indices
+or simulated_case_indices are not unique, or if there is an
+element that is in both simulated_ctrl_indices and
+simulated_case_indices.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>simulated_ctrls and simulated_cases, where simulated_cases</dt>
+<dd><p class="first last">are replicate (with no differential expression) for
+simulated_ctrls.</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(tuple)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="silver.dataset.Dataset.make_replicates">
+<code class="descname">make_replicates</code><span class="sig-paren">(</span><em>num_sim_ctrls</em>, <em>num_sim_cases</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/dataset.html#Dataset.make_replicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.dataset.Dataset.make_replicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a replicate datasets with predetermined number of samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_sim_ctrls</strong> (<em>int</em>) – Number of control samples to be simulated.</li>
+<li><strong>num_sim_cases</strong> (<em>int</em>) – Number of case samples to be simulated.</li>
+<li><strong>random_state</strong> (<em>int</em>) – A seed for reproducing method results.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">IndexError</span></code> – If simulated_ctrl_indices (simulated_case_indices)
+contains a value greater than or equal to the total number
+of controls (cases).</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – If elements of simulated_ctrl_indices
+or simulated_case_indices are not unique, or if there is an
+element that is in both simulated_ctrl_indices and
+simulated_case_indices.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>simulated_ctrls and simulated_cases, where simulated_cases</dt>
+<dd><p class="first last">are replicate (with no differential expression) for
+simulated_ctrls.</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(tuple)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-silver.dexpress">
+<span id="silver-dexpress-module"></span><h2>silver.dexpress module<a class="headerlink" href="#module-silver.dexpress" title="Permalink to this headline">¶</a></h2>
+<p>This module contains criteria used for simulating differential expression.</p>
+<p>Each criterion must extend DExpress class, which is an abstract class.</p>
+<dl class="class">
+<dt id="silver.dexpress.DExpress">
+<em class="property">class </em><code class="descclassname">silver.dexpress.</code><code class="descname">DExpress</code><span class="sig-paren">(</span><em>repository</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/dexpress.html#DExpress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.dexpress.DExpress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>An abstract class to be extended by any expression Criterion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>repository</strong> – <dl class="docutils">
+<dt>Repository: A repository containing the expression values of</dt>
+<dd>genes for several samples.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="silver.dexpress.TTestDExpress">
+<em class="property">class </em><code class="descclassname">silver.dexpress.</code><code class="descname">TTestDExpress</code><span class="sig-paren">(</span><em>repository</em>, <em>alpha</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/dexpress.html#TTestDExpress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.dexpress.TTestDExpress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#silver.dexpress.DExpress" title="silver.dexpress.DExpress"><code class="xref py py-class docutils literal notranslate"><span class="pre">silver.dexpress.DExpress</span></code></a></p>
+<p>A criteria based on independent two-sample t-test.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>repository</strong> (<a class="reference internal" href="#silver.repository.Repository" title="silver.repository.Repository"><em>Repository</em></a>) – A expression repository to be used for
+simulating differential expression.</li>
+<li><strong>alpha</strong> (<em>float</em>) – A positive number between 0 and 1 used as
+significant level.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-silver.exceptions">
+<span id="silver-exceptions-module"></span><h2>silver.exceptions module<a class="headerlink" href="#module-silver.exceptions" title="Permalink to this headline">¶</a></h2>
+<p>This mocule contains Exception objects.</p>
+<dl class="exception">
+<dt id="silver.exceptions.InvalidGenesetFoldChangeFile">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">InvalidGenesetFoldChangeFile</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#InvalidGenesetFoldChangeFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.InvalidGenesetFoldChangeFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="silver.exceptions.InvalidGenesetRepositoryFile">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">InvalidGenesetRepositoryFile</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#InvalidGenesetRepositoryFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.InvalidGenesetRepositoryFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="silver.exceptions.InvalidExpressionFile">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">InvalidExpressionFile</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#InvalidExpressionFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.InvalidExpressionFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="silver.exceptions.MismatchedProfileException">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">MismatchedProfileException</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#MismatchedProfileException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.MismatchedProfileException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="silver.exceptions.InvalidNumberOfInputSamples">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">InvalidNumberOfInputSamples</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#InvalidNumberOfInputSamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.InvalidNumberOfInputSamples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="silver.exceptions.InvalidNumberOfOutputSamples">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">InvalidNumberOfOutputSamples</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#InvalidNumberOfOutputSamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.InvalidNumberOfOutputSamples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="silver.exceptions.InvalidValueforStandardDistributionOfNoise">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">InvalidValueforStandardDistributionOfNoise</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#InvalidValueforStandardDistributionOfNoise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.InvalidValueforStandardDistributionOfNoise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="silver.exceptions.InvalidNumberOfGenes">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">InvalidNumberOfGenes</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#InvalidNumberOfGenes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.InvalidNumberOfGenes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="silver.exceptions.CaseControlProfileMissMatch">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">CaseControlProfileMissMatch</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#CaseControlProfileMissMatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.CaseControlProfileMissMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="silver.exceptions.InvalidContrastException">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">InvalidContrastException</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#InvalidContrastException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.InvalidContrastException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="silver.exceptions.NonExistingExpressionException">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">NonExistingExpressionException</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#NonExistingExpressionException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.NonExistingExpressionException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="silver.exceptions.InvalidLogFoldChangeValue">
+<em class="property">exception </em><code class="descclassname">silver.exceptions.</code><code class="descname">InvalidLogFoldChangeValue</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/exceptions.html#InvalidLogFoldChangeValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.exceptions.InvalidLogFoldChangeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-silver.expression_profile">
+<span id="silver-expression-profile-module"></span><h2>silver.expression_profile module<a class="headerlink" href="#module-silver.expression_profile" title="Permalink to this headline">¶</a></h2>
+<p>This module aims at representing a expression profiles.</p>
+<dl class="class">
+<dt id="silver.expression_profile.ExpressionProfile">
+<em class="property">class </em><code class="descclassname">silver.expression_profile.</code><code class="descname">ExpressionProfile</code><span class="sig-paren">(</span><em>profile</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/expression_profile.html#ExpressionProfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.expression_profile.ExpressionProfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for wrapping gene expression profile data.</p>
+<dl class="attribute">
+<dt id="silver.expression_profile.ExpressionProfile.columns">
+<code class="descname">columns</code><a class="headerlink" href="#silver.expression_profile.ExpressionProfile.columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of sample names.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of all samples in the ExpressionProfile object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="silver.expression_profile.ExpressionProfile.concat">
+<code class="descname">concat</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/expression_profile.html#ExpressionProfile.concat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.expression_profile.ExpressionProfile.concat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenate two ExpressionProfiles.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other</strong> (<a class="reference internal" href="#silver.expression_profile.ExpressionProfile" title="silver.expression_profile.ExpressionProfile"><em>ExpressionProfile</em></a>) – An ExpressionProfile with the same
+keys() and with different sample names comparing to self.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An ExpressionProfile resulting from
+concatenation of self and other.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#silver.expression_profile.ExpressionProfile" title="silver.expression_profile.ExpressionProfile">ExpressionProfile</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – Raise ValueError if self and other have different
+or unaligned keys(), i.e. gene names/IDS or if the sample
+names in self and other are not different from each other.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="silver.expression_profile.ExpressionProfile.data">
+<code class="descname">data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/expression_profile.html#ExpressionProfile.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.expression_profile.ExpressionProfile.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the expression values of the ExpressionProfile.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>A shallow copy of the expression values from</dt>
+<dd>the ExpressionProfile object.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="silver.expression_profile.ExpressionProfile.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>identifier</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/expression_profile.html#ExpressionProfile.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.expression_profile.ExpressionProfile.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the expression values for a gene.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>str</strong> – A gene name/ID.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>A list of expression values for the gene with identifier as</dt>
+<dd>its name/ID</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code> – Raise KeyError if identifier is not the name/ID of a gene
+in the ExpressionProfile object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="silver.expression_profile.ExpressionProfile.items">
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/expression_profile.html#ExpressionProfile.items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.expression_profile.ExpressionProfile.items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yield tuples of (gene name/ID, expression values).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Yields:</th><td class="field-body"><p class="first"><em>tuple</em> –</p>
+<dl class="last docutils">
+<dt>A tuple of size two, where the first element is a</dt>
+<dd><p class="first last">gene name/ID and the second element is the list of
+expression values, of all samples, for that gene.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="silver.expression_profile.ExpressionProfile.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/expression_profile.html#ExpressionProfile.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.expression_profile.ExpressionProfile.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the gene IDs (names).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An iterator of the gene ID/names in the ExpressionProfile object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="silver.expression_profile.ExpressionProfile.profile">
+<code class="descname">profile</code><a class="headerlink" href="#silver.expression_profile.ExpressionProfile.profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return expression profile object as a pandas.DataFrame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pandas.DataFrame</strong> – Expression values of all genes across all samples.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="silver.expression_profile.ExpressionProfile.samples">
+<code class="descname">samples</code><span class="sig-paren">(</span><em>cols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/expression_profile.html#ExpressionProfile.samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.expression_profile.ExpressionProfile.samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an ExpressionProfile from a subset of samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cols</strong> (<em>list</em>) – A sequence of column names or column indices.
+If cols is a list of column names/IDs, it must be a subset of
+sample names/IDs in the ExpressionProfile. If cols is a list of
+integers its elements must be between 0 and  the number of
+samples -1.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>An ExpressionProfile object containing the</dt>
+<dd><p class="first last">expression level of all genes for the samples represented
+in cols.</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#silver.expression_profile.ExpressionProfile" title="silver.expression_profile.ExpressionProfile">ExpressionProfile</a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – Raises ValueError if cols is a list of the
+ExpressionProfile sample  names/IDs (of type strings) or
+a list of integers between 0 and  the number of samples -1.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">IndexError</span></code> – Raises IndexError if cols contains indices that are
+out of bound, i.e. not between 0 and  the number of samples -1.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="silver.expression_profile.ExpressionProfile.set">
+<code class="descname">set</code><span class="sig-paren">(</span><em>identifier</em>, <em>expression</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/expression_profile.html#ExpressionProfile.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.expression_profile.ExpressionProfile.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the expression values of a gene.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>identifier</strong> (<em>str</em>) – A gene name/ID</li>
+<li><strong>expression</strong> (<em>list</em>) – A list of expression values to be assigned to
+the gene with identifier as its name. The length of the
+expression argument must be equal to the number of samples in
+the ExpressionProfile.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code> – Raise KeyError if identifier is not the name/ID of a gene
+in the ExpressionProfile object.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – Raise ValueError if the length of expression is not
+equal to the number of samples in the ExpressionProfile.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="silver.expression_profile.ExpressionProfile.shape">
+<code class="descname">shape</code><a class="headerlink" href="#silver.expression_profile.ExpressionProfile.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the shape of the ExpressionProfile object as a tuple.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>A tuple of size two, where the first element represents the</dt>
+<dd>number of genes and the second element represents the number
+of samples.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="silver.expression_profile.ExpressionProfile.values">
+<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/expression_profile.html#ExpressionProfile.values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.expression_profile.ExpressionProfile.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yield list of expression values per gene.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Yields:</th><td class="field-body"><p class="first"><em>list</em> –</p>
+<dl class="last docutils">
+<dt>the list of expression values, of all samples, for the</dt>
+<dd><p class="first last">next gene.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-silver.geneset_database">
+<span id="silver-geneset-database-module"></span><h2>silver.geneset_database module<a class="headerlink" href="#module-silver.geneset_database" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="silver.geneset_database.GenesetDatabase">
+<em class="property">class </em><code class="descclassname">silver.geneset_database.</code><code class="descname">GenesetDatabase</code><span class="sig-paren">(</span><em>database</em>, <em>info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/geneset_database.html#GenesetDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.geneset_database.GenesetDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="silver.geneset_database.GenesetDatabase.clean">
+<code class="descname">clean</code><span class="sig-paren">(</span><em>background</em>, <em>min_size=1</em>, <em>max_size=inf</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/geneset_database.html#GenesetDatabase.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.geneset_database.GenesetDatabase.clean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="silver.geneset_database.GenesetDatabase.fromGMT">
+<em class="property">classmethod </em><code class="descname">fromGMT</code><span class="sig-paren">(</span><em>address</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/geneset_database.html#GenesetDatabase.fromGMT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.geneset_database.GenesetDatabase.fromGMT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="silver.geneset_database.GenesetDatabase.items">
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/geneset_database.html#GenesetDatabase.items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.geneset_database.GenesetDatabase.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="silver.geneset_database.GenesetDatabase.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/geneset_database.html#GenesetDatabase.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.geneset_database.GenesetDatabase.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="silver.geneset_database.GenesetDatabase.values">
+<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/geneset_database.html#GenesetDatabase.values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.geneset_database.GenesetDatabase.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-silver.repository">
+<span id="silver-repository-module"></span><h2>silver.repository module<a class="headerlink" href="#module-silver.repository" title="Permalink to this headline">¶</a></h2>
+<p>Represent a repository, which is a collection for expression values.</p>
+<dl class="class">
+<dt id="silver.repository.Repository">
+<em class="property">class </em><code class="descclassname">silver.repository.</code><code class="descname">Repository</code><span class="sig-paren">(</span><em>case_expression_profile</em>, <em>num_sim_cases</em>, <em>num_repetitions=1</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silver/repository.html#Repository"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#silver.repository.Repository" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Create a repository using case sample expression profile.</p>
+<p>The generated repository contains num_sim_cases and
+num_repetitions * len(case_expression_profile) rows.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>case_expression_profile (ExpressionProfile): Expression data for</dt>
+<dd>case samples.</dd>
+<dt>num_sim_cases (int): A positive integer representing the number of</dt>
+<dd>control samples to be simulated.</dd>
+<dt>num_repetitions (int): A positive integer representing the number of</dt>
+<dd>samplings. In each sampling a set of columns from the cases is
+extracted and appended to the repository.</dd>
+</dl>
+</dd>
+<dt>Raises:</dt>
+<dd><dl class="first last docutils">
+<dt>ValueError: If num_sim_cases is greater than the number of samples</dt>
+<dd>in case_expression_profile.</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="attribute">
+<dt id="silver.repository.Repository.shape">
+<code class="descname">shape</code><a class="headerlink" href="#silver.repository.Repository.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the shape of the Repository object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>A tuple of length two, where the first element is</dt>
+<dd>the number of rows in the Repository object and the second
+element is the number of samples.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-silver">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-silver" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">silver package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-silver.dataset">silver.dataset module</a></li>
+<li><a class="reference internal" href="#module-silver.dexpress">silver.dexpress module</a></li>
+<li><a class="reference internal" href="#module-silver.exceptions">silver.exceptions module</a></li>
+<li><a class="reference internal" href="#module-silver.expression_profile">silver.expression_profile module</a></li>
+<li><a class="reference internal" href="#module-silver.geneset_database">silver.geneset_database module</a></li>
+<li><a class="reference internal" href="#module-silver.repository">silver.repository module</a></li>
+<li><a class="reference internal" href="#module-silver">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/silver.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Silver 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Farhad Maleki.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,335 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>silver.expression_profile &#8212; Silver 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Silver 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for silver.expression_profile</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module aims at representing a expression profiles.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="ExpressionProfile"><a class="viewcode-back" href="../../source/silver.html#silver.expression_profile.ExpressionProfile">[docs]</a><span class="k">class</span> <span class="nc">ExpressionProfile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class for wrapping gene expression profile data.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize an ExpressionProfile object using a pandas DataFrame.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            profile(pandas.DataFrame): A DataFrame of expression values.</span>
+<span class="sd">                Each row represents expression levels for a gene, and each</span>
+<span class="sd">                column represents expression levels for a sample.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__profile</span> <span class="o">=</span> <span class="n">profile</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the shape of the ExpressionProfile object as a tuple.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: A tuple of size two, where the first element represents the</span>
+<span class="sd">                number of genes and the second element represents the number</span>
+<span class="sd">                of samples.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of genes in an ExpressionProfile.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The number of genes in the ExpressionProfile.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="ExpressionProfile.keys"><a class="viewcode-back" href="../../source/silver.html#silver.expression_profile.ExpressionProfile.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the gene IDs (names).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            An iterator of the gene ID/names in the ExpressionProfile object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExpressionProfile.items"><a class="viewcode-back" href="../../source/silver.html#silver.expression_profile.ExpressionProfile.items">[docs]</a>    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Yield tuples of (gene name/ID, expression values).</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            tuple: A tuple of size two, where the first element is a</span>
+<span class="sd">                gene name/ID and the second element is the list of</span>
+<span class="sd">                expression values, of all samples, for that gene.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">idx</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExpressionProfile.values"><a class="viewcode-back" href="../../source/silver.html#silver.expression_profile.ExpressionProfile.values">[docs]</a>    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Yield list of expression values per gene.</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            list: the list of expression values, of all samples, for the</span>
+<span class="sd">                next gene.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="nb">list</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Implement evaluation of self[key].</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            int: An non-negative number between 0 and self.len()-1</span>
+<span class="sd">                (both inclusive).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Expression values, of all samples, for the i-th gene.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;i must be of type integer.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Index out of bound error.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the list of sample names.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: List of all samples in the ExpressionProfile object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return expression profile object as a pandas.DataFrame.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pandas.DataFrame: Expression values of all genes across all samples.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__profile</span>
+
+<div class="viewcode-block" id="ExpressionProfile.get"><a class="viewcode-back" href="../../source/silver.html#silver.expression_profile.ExpressionProfile.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the expression values for a gene.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            str: A gene name/ID.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: A list of expression values for the gene with identifier as</span>
+<span class="sd">                its name/ID</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: Raise KeyError if identifier is not the name/ID of a gene</span>
+<span class="sd">                in the ExpressionProfile object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">identifier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;identifier cannot be found in the Profile object.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">identifier</span><span class="p">,</span> <span class="p">:])</span></div>
+
+<div class="viewcode-block" id="ExpressionProfile.set"><a class="viewcode-back" href="../../source/silver.html#silver.expression_profile.ExpressionProfile.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">expression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the expression values of a gene.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            identifier (str): A gene name/ID</span>
+<span class="sd">            expression (list): A list of expression values to be assigned to</span>
+<span class="sd">                the gene with identifier as its name. The length of the</span>
+<span class="sd">                expression argument must be equal to the number of samples in</span>
+<span class="sd">                the ExpressionProfile.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: Raise KeyError if identifier is not the name/ID of a gene</span>
+<span class="sd">                in the ExpressionProfile object.</span>
+<span class="sd">            ValueError: Raise ValueError if the length of expression is not</span>
+<span class="sd">                equal to the number of samples in the ExpressionProfile.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">identifier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;identifier cannot be found in the Profile object.&#39;</span><span class="p">)</span>
+        <span class="n">expres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">expres</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">expression</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;length of expression must be equal to the &#39;</span> <span class="o">+</span>
+                             <span class="s1">&#39;number of samples in the ExpressionProfile.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">identifier</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if a gene exist in the ExpressionProfile object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            identifier (str): A gene name/ID.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if identifier is a gene name/ID in the ExpressionProfile</span>
+<span class="sd">                object; False otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+
+<div class="viewcode-block" id="ExpressionProfile.samples"><a class="viewcode-back" href="../../source/silver.html#silver.expression_profile.ExpressionProfile.samples">[docs]</a>    <span class="k">def</span> <span class="nf">samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an ExpressionProfile from a subset of samples.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cols (list): A sequence of column names or column indices.</span>
+<span class="sd">                If cols is a list of column names/IDs, it must be a subset of</span>
+<span class="sd">                sample names/IDs in the ExpressionProfile. If cols is a list of</span>
+<span class="sd">                integers its elements must be between 0 and  the number of</span>
+<span class="sd">                samples -1.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ExpressionProfile: An ExpressionProfile object containing the</span>
+<span class="sd">                expression level of all genes for the samples represented</span>
+<span class="sd">                in cols.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Raises ValueError if cols is a list of the</span>
+<span class="sd">                ExpressionProfile sample  names/IDs (of type strings) or</span>
+<span class="sd">                a list of integers between 0 and  the number of samples -1.</span>
+<span class="sd">            IndexError: Raises IndexError if cols contains indices that are</span>
+<span class="sd">                out of bound, i.e. not between 0 and  the number of samples -1.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;cols must be a list of the ExpressionProfile sample &#39;</span>
+                     <span class="s1">&#39;names/IDs (of type strings) or a list of integers &#39;</span>
+                     <span class="s1">&#39;between 0 and  the number of samples -1.&#39;</span><span class="p">)</span>
+        <span class="n">is_index</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="c1">#All elements of cols must have the same data type</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_index</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">cols</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">min</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Index out of bound error.&#39;</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">cols</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">ExpressionProfile</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">result</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ExpressionProfile.data"><a class="viewcode-back" href="../../source/silver.html#silver.expression_profile.ExpressionProfile.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the expression values of the ExpressionProfile.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray: A shallow copy of the expression values from</span>
+<span class="sd">                the ExpressionProfile object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">values</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A string representation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: A string representation of the ExpressionProfile object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExpressionProfile.concat"><a class="viewcode-back" href="../../source/silver.html#silver.expression_profile.ExpressionProfile.concat">[docs]</a>    <span class="k">def</span> <span class="nf">concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Concatenate two ExpressionProfiles.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (ExpressionProfile): An ExpressionProfile with the same</span>
+<span class="sd">                keys() and with different sample names comparing to self.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ExpressionProfile: An ExpressionProfile resulting from</span>
+<span class="sd">            concatenation of self and other.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Raise ValueError if self and other have different</span>
+<span class="sd">                or unaligned keys(), i.e. gene names/IDS or if the sample</span>
+<span class="sd">                names in self and other are not different from each other.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Profiles with unequal (different or unaligned) row names &#39;</span>
+               <span class="s1">&#39;cannot be concatenated.&#39;</span><span class="p">)</span>
+        <span class="k">if</span>  <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">!=</span> <span class="nb">list</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Profile sample names must be unique after &#39;</span>
+                             <span class="s1">&#39;concatenation.&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">profile</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ExpressionProfile</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Silver 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Farhad Maleki.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+    </div>
+  </body>
+</html>

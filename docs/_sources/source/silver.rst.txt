@@ -1,0 +1,62 @@
+silver package
+==============
+
+Submodules
+----------
+
+silver.dataset module
+---------------------
+
+.. automodule:: silver.dataset
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+silver.dexpress module
+----------------------
+
+.. automodule:: silver.dexpress
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+silver.exceptions module
+------------------------
+
+.. automodule:: silver.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+silver.expression\_profile module
+---------------------------------
+
+.. automodule:: silver.expression_profile
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+silver.geneset\_database module
+-------------------------------
+
+.. automodule:: silver.geneset_database
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+silver.repository module
+------------------------
+
+.. automodule:: silver.repository
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: silver
+    :members:
+    :undoc-members:
+    :show-inheritance:

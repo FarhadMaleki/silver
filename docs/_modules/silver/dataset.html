@@ -1,0 +1,226 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>silver.dataset &#8212; Silver 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Silver 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for silver.dataset</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module simulates expression datasets.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">silver.exceptions</span> <span class="k">import</span> <span class="n">MismatchedProfileException</span>
+<span class="kn">from</span> <span class="nn">silver.exceptions</span> <span class="k">import</span> <span class="n">NonExistingExpressionException</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../source/silver.html#silver.dataset.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Set the required case/control data to be used for Dataset creation.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        ctrl_profile (ExpressionProfile): A ExpressionProfile object</span>
+<span class="sd">            containing expression measures for control samples.</span>
+<span class="sd">        case_profile (ExpressionProfile): A ExpressionProfile object</span>
+<span class="sd">            containing expression measures for case samples.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        MismatchedProfileException: If the order of gene ids in</span>
+<span class="sd">            ctrl_profile and case_profile are not the same.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl_profile</span><span class="p">,</span> <span class="n">case_profile</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ctrl_profile</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+                              <span class="nb">list</span><span class="p">(</span><span class="n">case_profile</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;The order of gene ids in ctrl_profile and case_profile &#39;</span> <span class="o">+</span>
+                   <span class="s1">&#39;must be the same.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">MismatchedProfileException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">controls</span> <span class="o">=</span> <span class="n">ctrl_profile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cases</span> <span class="o">=</span> <span class="n">case_profile</span>
+
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="Dataset.make_custom_replicates"><a class="viewcode-back" href="../../source/silver.html#silver.dataset.Dataset.make_custom_replicates">[docs]</a>    <span class="k">def</span> <span class="nf">make_custom_replicates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulated_ctrl_indices</span><span class="p">,</span>
+                               <span class="n">simulated_case_indices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a replicate datasets with predetermined samples.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            simulated_ctrl_indices (array-like): The indices of samples</span>
+<span class="sd">                to be used as control samples. These samples are chosen from</span>
+<span class="sd">                all controls used for initializing the object.</span>
+<span class="sd">            simulated_case_indices (array-like): The indices of samples</span>
+<span class="sd">                to be used as case samples. These samples are chosen from</span>
+<span class="sd">                all controls used for initializing the object.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            IndexError: If simulated_ctrl_indices (simulated_case_indices)</span>
+<span class="sd">                contains a value greater than or equal to the total number</span>
+<span class="sd">                of controls (cases).</span>
+<span class="sd">            ValueError: If elements of simulated_ctrl_indices</span>
+<span class="sd">                or simulated_case_indices are not unique, or if there is an</span>
+<span class="sd">                element that is in both simulated_ctrl_indices and</span>
+<span class="sd">                simulated_case_indices.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (tuple): simulated_ctrls and simulated_cases, where simulated_cases</span>
+<span class="sd">                are replicate (with no differential expression) for</span>
+<span class="sd">                simulated_ctrls.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> must contain unique values.&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">simulated_ctrl_indices</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">simulated_ctrl_indices</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;simulated_ctrl_indices&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">simulated_case_indices</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">simulated_case_indices</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;simulated_case_indices&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">simulated_ctrl_indices</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">simulated_case_indices</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Group indices must not overlap.&#39;</span><span class="p">)</span>
+        <span class="n">simulated_ctrls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">samples</span><span class="p">(</span><span class="n">simulated_ctrl_indices</span><span class="p">)</span>
+        <span class="n">simulated_cases</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">samples</span><span class="p">(</span><span class="n">simulated_case_indices</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">simulated_ctrls</span><span class="p">,</span> <span class="n">simulated_cases</span></div>
+
+    <span class="c1">###########################################################################</span>
+<div class="viewcode-block" id="Dataset.make_replicates"><a class="viewcode-back" href="../../source/silver.html#silver.dataset.Dataset.make_replicates">[docs]</a>    <span class="k">def</span> <span class="nf">make_replicates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_sim_ctrls</span><span class="p">,</span> <span class="n">num_sim_cases</span><span class="p">,</span>
+                        <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a replicate datasets with predetermined number of samples.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_sim_ctrls (int): Number of control samples to be simulated.</span>
+<span class="sd">            num_sim_cases (int): Number of case samples to be simulated.</span>
+<span class="sd">            random_state (int): A seed for reproducing method results.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            IndexError: If simulated_ctrl_indices (simulated_case_indices)</span>
+<span class="sd">                contains a value greater than or equal to the total number</span>
+<span class="sd">                of controls (cases).</span>
+<span class="sd">            ValueError: If elements of simulated_ctrl_indices</span>
+<span class="sd">                or simulated_case_indices are not unique, or if there is an</span>
+<span class="sd">                element that is in both simulated_ctrl_indices and</span>
+<span class="sd">                simulated_case_indices.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (tuple): simulated_ctrls and simulated_cases, where simulated_cases</span>
+<span class="sd">                are replicate (with no differential expression) for</span>
+<span class="sd">                simulated_ctrls.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">random_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+        <span class="n">total_num_controls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">num_sim_ctrls</span> <span class="o">+</span> <span class="n">num_sim_cases</span> <span class="o">&gt;</span> <span class="n">total_num_controls</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;num_sim_ctrls + num_sim_cases must &#39;</span> <span class="o">+</span>
+                             <span class="s1">&#39;be less than or equal to the total number of &#39;</span> <span class="o">+</span>
+                             <span class="s1">&#39;controls&#39;</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">total_num_controls</span><span class="p">))</span>
+        <span class="n">simulated_ctrl_indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[:</span><span class="n">num_sim_ctrls</span><span class="p">]</span>
+        <span class="n">simulated_case_indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">num_sim_ctrls</span><span class="p">:(</span><span class="n">num_sim_ctrls</span> <span class="o">+</span>
+                                                        <span class="n">num_sim_cases</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_custom_replicates</span><span class="p">(</span><span class="n">simulated_ctrl_indices</span><span class="p">,</span>
+                                           <span class="n">simulated_case_indices</span><span class="p">)</span></div>
+
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="Dataset.diff_express"><a class="viewcode-back" href="../../source/silver.html#silver.dataset.Dataset.diff_express">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">diff_express</span><span class="p">(</span><span class="n">ctrls</span><span class="p">,</span> <span class="n">cases</span><span class="p">,</span> <span class="n">genes_fold_changes</span><span class="p">,</span> <span class="n">dexpress_obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Differentially express some genes on the simulated cases.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ctrls (ExpressionProfile): A ExpressionProfile containing simulated</span>
+<span class="sd">                controls.</span>
+<span class="sd">            cases (ExpressionProfile): A ExpressionProfile containing simulated</span>
+<span class="sd">                cases, which are</span>
+<span class="sd">                a replicate for controls without differential expression.</span>
+<span class="sd">            genes_fold_changes (dict): A dictionary representing the</span>
+<span class="sd">                fold-change values for some genes. Each gene in</span>
+<span class="sd">                genes_fold_changes.keys() must be an index element of</span>
+<span class="sd">                ctrls and cases.</span>
+<span class="sd">            dexpress_obj (DExpress): A DExpress object that determines the</span>
+<span class="sd">                procedure to be applied for differential expression.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing ctrls (unchanged) and updated cases.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">gene</span><span class="p">,</span> <span class="n">fold_change</span> <span class="ow">in</span> <span class="n">genes_fold_changes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">expressions</span> <span class="o">=</span> <span class="n">ctrls</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">gene</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">expressions</span> <span class="o">=</span> <span class="n">dexpress_obj</span><span class="p">(</span><span class="n">expressions</span><span class="p">,</span> <span class="n">fold_change</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NonExistingExpressionException</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> cannot be expressed by&#39;</span> <span class="o">+</span>
+                       <span class="s1">&#39; </span><span class="si">{}</span><span class="s1"> fold change&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span> <span class="n">fold_change</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="n">cases</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span> <span class="n">expressions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ctrls</span><span class="p">,</span> <span class="n">cases</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Silver 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Farhad Maleki.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+    </div>
+  </body>
+</html>
