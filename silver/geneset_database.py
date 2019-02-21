@@ -10,6 +10,9 @@ class GenesetDatabase(object):
     def __getitem__(self, identifier):
         return self.database[identifier]
 
+    def __len__(self):
+        return len(self.database)
+
     def __iter__(self):
         return iter(self.database)
 
