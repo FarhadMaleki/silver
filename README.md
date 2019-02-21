@@ -33,6 +33,9 @@ make regression
 
 New tests should be added as modules where their names start with *test_* under *test* directory.
 
+## Documentation
+
+A comprehensive documentation is available [here](https://farhadmaleki.github.io/silver/).
 
 ## Versioning
 
