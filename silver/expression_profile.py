@@ -2,6 +2,7 @@
 """
 import copy
 import pandas as pd
+import numbers
 
 
 class ExpressionProfile(object):
@@ -84,8 +85,8 @@ class ExpressionProfile(object):
             list: Expression values, of all samples, for the i-th gene.
 
         """
-        if not isinstance(i, int):
-            raise TypeError('i must be of type integer.')
+        if not isinstance(i, numbers.Integral):
+            raise TypeError('i must be an integer number.')
         if i < 0 or i >= len(self):
             raise IndexError('Index out of bound error.')
         return list(self.profile.iloc[i, :])
@@ -192,7 +193,7 @@ class ExpressionProfile(object):
         error_msg = ('cols must be a list of the ExpressionProfile sample '
                      'names/IDs (of type strings) or a list of integers '
                      'between 0 and  the number of samples -1.')
-        is_index = isinstance(cols[0], int)
+        is_index = isinstance(cols[0], numbers.Integral)
         #All elements of cols must have the same data type
         if all(isinstance(col, type(cols[0])) for col in cols) is not True:
             raise ValueError(error_msg)
