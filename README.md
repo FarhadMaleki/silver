@@ -55,11 +55,11 @@ from silver.utils import simulate
 
 The follwoig files are required to simulate a dataset.
 <dl>
-    <dt>*A real expression profile*</dt>
+    <dt>A real expression profile</dt>
     <dd>This file can be downloaded from online sources such as GEO and ArrayExpress.</dd>
-    <dt>*A contrast file*</dt>
+    <dt>A contrast file</dt>
     <dd>This detrmines the phenotype of each sample in the real expression.</dd>
-    <dt>*A fold change file*</dt>
+    <dt>A fold change file</dt>
     <dd> This file contains the genes that a user wishes to differentially 
 express. Each row of this file contains the name/ID of a gene from the expression profile, and the lower and upper bound for fold change between case and control samples. Down-regulation must be represented with negative numbers and up-regulation with positive numbers.</dd>
 </dl>
@@ -74,11 +74,11 @@ See the *data* directory for an example for each of these files.
 Then we need to read these files. To do so, we need the following information about each of them:
 
 <dl>
-    <dt>*FC_ID_COL_NAME*</dt>
+    <dt>FC_ID_COL_NAME</dt>
     <dd>The column name for the gene name/Id in fold change file.</dd>
-    <dt>*LOWER_BOUND_COL_NAME*</dt>
+    <dt>LOWER_BOUND_COL_NAME</dt>
     <dd>The column name for the lowest fold change allowed for each gene.</dd>
-    <dt>*UPPER_BOUND_COL_NAME*</dt>
+    <dt>UPPER_BOUND_COL_NAME</dt>
     <dd>The column name for the highest fold change allowed for each gene.</dd>
     <dt>PROFILE_ID_COL_NAME</dt>
     <dd>The column name for the gene name/Id in expression profile.</dd>
