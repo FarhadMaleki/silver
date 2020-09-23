@@ -111,7 +111,8 @@ def simulate(profile_address=None,
              contrast_sep='\t',
              fold_change_sep='\t',
              alpha=0.05,
-             random_state=0):
+             random_state=0,
+             sampling_with_replacement=False):
     """
 
     Args:
@@ -157,6 +158,8 @@ def simulate(profile_address=None,
         fold_change_sep (str): Field separator.  Default value is '\t'.
         alpha (float): Significance level. The default is 0.05.
         random_state (int): The default is 0.
+        sampling_with_replacement (bool): True for using sampling with
+            replacement and False otherwise. Default is False.
     """
     #Set random seed
     np.random.seed(random_state)
@@ -183,13 +186,16 @@ def simulate(profile_address=None,
                       profile.samples(case_indices))
     # Generate simulated controls and a replicates (no differential expression)
     sim_ctrls, sim_cases = dataset.make_replicates(num_simulated_ctrls,
-                                                   num_simulated_cases)
+                                                   num_simulated_cases,
+                                                   replace=sampling_with_replacement)
     # Assemble a repository
     repository = Repository(profile.samples(case_indices), num_simulated_cases,
                             num_repetitions=num_repository_reps,
-                            random_state=random_state)
+                            random_state=random_state,
+                            replace=sampling_with_replacement)
     # Create a DEpress object
     dexpress_obj = TTestDExpress(repository, alpha=alpha)
     # Apply differential expression
     dataset.diff_express(sim_ctrls, sim_cases, gfc, dexpress_obj)
     return sim_ctrls, sim_cases
+

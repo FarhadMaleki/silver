@@ -33,7 +33,8 @@ class Dataset(object):
 
     ############################################################################
     def make_custom_replicates(self, simulated_ctrl_indices,
-                               simulated_case_indices):
+                               simulated_case_indices,
+                               replace=False):
         """Create a replicate datasets with predetermined samples.
 
         Args:
@@ -43,6 +44,8 @@ class Dataset(object):
             simulated_case_indices (array-like): The indices of samples
                 to be used as case samples. These samples are chosen from
                 all controls used for initializing the object.
+            replace (bool): True for using sampling with replacement and False
+                otherwise. Default is False.
 
         Raises:
             IndexError: If simulated_ctrl_indices (simulated_case_indices)
@@ -51,7 +54,8 @@ class Dataset(object):
             ValueError: If elements of simulated_ctrl_indices
                 or simulated_case_indices are not unique, or if there is an
                 element that is in both simulated_ctrl_indices and
-                simulated_case_indices.
+                simulated_case_indices. Only applicable when the replace
+                parameter is False.
 
         Returns:
             (tuple): simulated_ctrls and simulated_cases, where simulated_cases
@@ -59,26 +63,30 @@ class Dataset(object):
                 simulated_ctrls.
 
         """
-        msg = '{} must contain unique values.'
-        if len(set(simulated_ctrl_indices)) != len(simulated_ctrl_indices):
-            raise IndexError(msg.format('simulated_ctrl_indices'))
-        if len(set(simulated_case_indices)) != len(simulated_case_indices):
-            raise IndexError(msg.format('simulated_case_indices'))
-        if (set(simulated_ctrl_indices) & set(simulated_case_indices)) != set():
-            raise ValueError('Group indices must not overlap.')
+        if replace is False:
+            msg = '{} must contain unique values.'
+            if len(set(simulated_ctrl_indices)) != len(simulated_ctrl_indices):
+                raise IndexError(msg.format('simulated_ctrl_indices'))
+            if len(set(simulated_case_indices)) != len(simulated_case_indices):
+                raise IndexError(msg.format('simulated_case_indices'))
+            if (set(simulated_ctrl_indices) & set(simulated_case_indices)) != set():
+                raise ValueError('Group indices must not overlap.')
+
         simulated_ctrls = self.controls.samples(simulated_ctrl_indices)
         simulated_cases = self.controls.samples(simulated_case_indices)
         return simulated_ctrls, simulated_cases
 
     ###########################################################################
     def make_replicates(self, num_sim_ctrls, num_sim_cases,
-                        random_state=None):
-        """Create a replicate datasets with predetermined number of samples.
+                        random_state=None, replace=False):
+        """Create a replicate dataset with predetermined number of samples.
 
         Args:
             num_sim_ctrls (int): Number of control samples to be simulated.
             num_sim_cases (int): Number of case samples to be simulated.
             random_state (int): A seed for reproducing method results.
+            replace (bool): True for using sampling with replacement and False
+                otherwise. Default is False.
 
         Raises:
             IndexError: If simulated_ctrl_indices (simulated_case_indices)
@@ -97,14 +105,20 @@ class Dataset(object):
         if random_state is not None:
             np.random.seed(random_state)
         total_num_controls = self.controls.shape[1]
-        if num_sim_ctrls + num_sim_cases > total_num_controls:
+        if replace is False and (num_sim_ctrls + num_sim_cases > total_num_controls):
             raise ValueError('num_sim_ctrls + num_sim_cases must ' +
                              'be less than or equal to the total number of ' +
-                             'controls')
+                             'controls. Alternatively you should set the "replace" ' +
+                             'parameter as True to use sampling with replacement ' +
+                             'instead of sampling without replacement.')
         indices = np.random.permutation(np.arange(total_num_controls))
-        simulated_ctrl_indices = indices[:num_sim_ctrls]
-        simulated_case_indices = indices[num_sim_ctrls:(num_sim_ctrls +
-                                                        num_sim_cases)]
+        if replace is False:
+            simulated_ctrl_indices = indices[:num_sim_ctrls]
+            simulated_case_indices = indices[num_sim_ctrls:(num_sim_ctrls +
+                                                            num_sim_cases)]
+        else:
+            simulated_ctrl_indices = np.random.choice(indices)
+            simulated_case_indices = np.random.choice(indices)
         return self.make_custom_replicates(simulated_ctrl_indices,
                                            simulated_case_indices)
 
@@ -141,3 +155,4 @@ class Dataset(object):
             finally:
                 cases.set(gene, expressions)
         return ctrls, cases
+
