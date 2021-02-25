@@ -33,7 +33,8 @@ sim_ctrls, sim_cases = simulate(profile_address=PROFILE_ADDRESS,
                                 contrast_sep='\t',
                                 fold_change_sep='\t',
                                 alpha=0.05,
-                                random_state=123456)
+                                random_state=123456,
+                                sampling_with_replacement=False)
 # Combine the simulated controls and cases
 expression_dataset = sim_ctrls.concat(sim_cases)
 # Get the expression profile

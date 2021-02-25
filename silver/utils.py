@@ -111,8 +111,8 @@ def simulate(profile_address=None,
              contrast_sep='\t',
              fold_change_sep='\t',
              alpha=0.05,
-             random_state=0,
-             sampling_with_replacement=False):
+             sampling_with_replacement=False,
+             random_state=0):
     """
 
     Args:
@@ -185,15 +185,17 @@ def simulate(profile_address=None,
     dataset = Dataset(profile.samples(ctrl_indices),
                       profile.samples(case_indices))
     # Generate simulated controls and a replicates (no differential expression)
-    sim_ctrls, sim_cases = dataset.make_replicates(num_simulated_ctrls,
-                                                   num_simulated_cases,
+    sim_ctrls, sim_cases = dataset.make_replicates(num_simulated_ctrls, num_simulated_cases,
                                                    replace=sampling_with_replacement)
+    _, num_ctrls = sim_ctrls.shape
+    _, num_cases = sim_cases.shape
+    sim_ctrls.profile.columns = [f'C{i}' for i in range(1, num_ctrls + 1)]
+    sim_cases.profile.columns = [f'T{i}' for i in range(1, num_cases + 1)]
     # Assemble a repository
     repository = Repository(profile.samples(case_indices), num_simulated_cases,
                             num_repetitions=num_repository_reps,
-                            random_state=random_state,
-                            replace=sampling_with_replacement)
-    # Create a DEpress object
+                            random_state=random_state)
+    # Create a DExpress object
     dexpress_obj = TTestDExpress(repository, alpha=alpha)
     # Apply differential expression
     dataset.diff_express(sim_ctrls, sim_cases, gfc, dexpress_obj)

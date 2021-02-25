@@ -244,7 +244,7 @@ class ExpressionProfile(object):
         """
         msg = ('Profiles with unequal (different or unaligned) row names '
                'cannot be concatenated.')
-        if  list(self.keys()) != list(other.keys()):
+        if list(self.keys()) != list(other.keys()):
             raise ValueError(msg)
         if set(self.columns) & set(other.columns) != set():
             raise ValueError('Profile sample names must be unique after '

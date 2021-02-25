@@ -1,6 +1,7 @@
 """This module simulates expression datasets.
 
 """
+import random
 import logging
 import numpy as np
 from silver.exceptions import MismatchedProfileException
@@ -78,15 +79,15 @@ class Dataset(object):
 
     ###########################################################################
     def make_replicates(self, num_sim_ctrls, num_sim_cases,
-                        random_state=None, replace=False):
+                         replace=False, random_state=None):
         """Create a replicate dataset with predetermined number of samples.
 
         Args:
             num_sim_ctrls (int): Number of control samples to be simulated.
             num_sim_cases (int): Number of case samples to be simulated.
-            random_state (int): A seed for reproducing method results.
             replace (bool): True for using sampling with replacement and False
                 otherwise. Default is False.
+            random_state (int): A seed for reproducing method results.
 
         Raises:
             IndexError: If simulated_ctrl_indices (simulated_case_indices)
@@ -111,16 +112,15 @@ class Dataset(object):
                              'controls. Alternatively you should set the "replace" ' +
                              'parameter as True to use sampling with replacement ' +
                              'instead of sampling without replacement.')
-        indices = np.random.permutation(np.arange(total_num_controls))
-        if replace is False:
-            simulated_ctrl_indices = indices[:num_sim_ctrls]
-            simulated_case_indices = indices[num_sim_ctrls:(num_sim_ctrls +
-                                                            num_sim_cases)]
-        else:
-            simulated_ctrl_indices = np.random.choice(indices)
-            simulated_case_indices = np.random.choice(indices)
+        indices = np.arange(total_num_controls)
+        if replace is True:
+            indices = random.choices(indices, k=num_sim_ctrls + num_sim_cases)
+        indices = np.random.permutation(indices)
+        simulated_ctrl_indices = indices[:num_sim_ctrls]
+        simulated_case_indices = indices[num_sim_ctrls:(num_sim_ctrls + num_sim_cases)]
         return self.make_custom_replicates(simulated_ctrl_indices,
-                                           simulated_case_indices)
+                                           simulated_case_indices,
+                                           replace=replace)
 
     ############################################################################
     @staticmethod
